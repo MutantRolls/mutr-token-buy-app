@@ -6,7 +6,7 @@ import { Coins, DollarSign, ArrowRight, Loader2, Check } from 'lucide-react';
 import Head from 'next/head';
 
 // USDC Token Mint on Devnet
-const USDC_MINT = new PublicKey("4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU");
+const USDC_MINT = new PublicKey("EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
 const RECEIVER_WALLET = new PublicKey("7qC6qDxoYkLhE4CPfoskE1XtcayjUcGo5s1Kzoy5Bokt"); // Replace with your wallet address
 const MUTR_EXCHANGE_RATE_SOL = 100; // 1 SOL = 100 MUTR
 const MUTR_EXCHANGE_RATE_USDC = 2; // 1 USDC = 2 MUTR
@@ -116,7 +116,7 @@ export default function DepositApp() {
       setIsLoading(true);
       setStatus('Preparing transaction...');
       
-      const connection = new Connection('https://api.devnet.solana.com', 'confirmed');
+      const connection = new Connection('https://api.mainnet-beta.solana.com', 'confirmed');
       
       const transaction = new Transaction().add(
         SystemProgram.transfer({
