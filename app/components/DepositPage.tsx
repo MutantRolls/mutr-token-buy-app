@@ -8,8 +8,8 @@ import Head from 'next/head';
 // USDC Token Mint on Devnet
 const USDC_MINT = new PublicKey("4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU");
 const RECEIVER_WALLET = new PublicKey("7qC6qDxoYkLhE4CPfoskE1XtcayjUcGo5s1Kzoy5Bokt"); // Replace with your wallet address
-const MUTR_EXCHANGE_RATE_SOL = 25; // 1 SOL = 25 MUTR
-const MUTR_EXCHANGE_RATE_USDC = 0.5; // 1 USDC = 0.5 MUTR
+const MUTR_EXCHANGE_RATE_SOL = 100; // 1 SOL = 100 MUTR
+const MUTR_EXCHANGE_RATE_USDC = 2; // 1 USDC = 2 MUTR
 
 // Add Phantom wallet type
 declare global {
