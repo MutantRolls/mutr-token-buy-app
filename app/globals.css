@@ -17,13 +17,14 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Press Start 2P", system-ui;
+  font-weight: 400;
+  font-style: normal;
 }
 
 .mut-btn{
   background: url(connet-btn.svg) center no-repeat;
-  background-color: #0a0a0a;
-  height: 48px;
+  height: 50px;
   width:400px;
 
 }
