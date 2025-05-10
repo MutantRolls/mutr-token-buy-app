@@ -233,7 +233,7 @@ export default function DepositApp() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       
-      <div className="rounded-lg p-6 w-full max-w-md">
+      <div className="rounded-lg p-6 w-full">
         <h1 className="text-2xl font-bold mb-6 text-center">Buy MUTR Token</h1>
         
         {/* Wallet Connection */}
@@ -266,7 +266,7 @@ export default function DepositApp() {
           <>
             {/* Token Selection */}
             <div className="mb-6">
-              <label className="block text-sm font-medium mb-2">Select Payment Token</label>
+              <label className="block text-sm font-medium mb-2 text-center">Select Payment Token</label>
               <div className="flex gap-2">
                 <button 
                   className={`flex-1 py-3 px-4 rounded-md flex items-center justify-center gap-2 ${paymentToken === 'SOL' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'}`}
@@ -289,7 +289,7 @@ export default function DepositApp() {
             
             {/* Input Amount */}
             <div className="mb-6">
-              <label className="block text-sm font-medium mb-2">Enter Amount</label>
+              <label className="block text-sm font-medium mb-2 text-center">Enter Amount</label>
               <div className="relative">
                 <input
                   type="number"
@@ -312,13 +312,13 @@ export default function DepositApp() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm ">You Pay</p>
-                  <p className="text-lg font-bold">
+                  <p className="text-lg font-bold mut-y">
                     {inputAmount || '0'} {paymentToken}
                   </p>
                 </div>
-                <ArrowRight className="text-gray-500" />
+                <ArrowRight className="text-gray-100" />
                 <div>
-                  <p className="text-sm ">You Receive</p>
+                  <p className="text-sm mut-g">You Receive</p>
                   <p className="text-lg font-bold">{outputAmount} MUTR</p>
                 </div>
               </div>
