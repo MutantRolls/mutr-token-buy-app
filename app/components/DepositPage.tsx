@@ -241,7 +241,7 @@ export default function DepositApp() {
           {!walletConnected ? (
             <button
               onClick={connectWallet}
-              className="w-full py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 font-medium flex items-center justify-center gap-2"
+              className="w-full py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 font-medium flex items-center justify-center gap-2 mut-btn"
             >
               Connect Phantom Wallet
             </button>
