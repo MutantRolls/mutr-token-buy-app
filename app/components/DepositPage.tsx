@@ -234,7 +234,7 @@ export default function DepositApp() {
       </Head>
       
       <div className="rounded-lg p-6 w-full max-w-md">
-        <h1 className="text-2xl font-bold mb-6 text-center text-gray-800">Buy MUTR Token</h1>
+        <h1 className="text-2xl font-bold mb-6 text-center">Buy MUTR Token</h1>
         
         {/* Wallet Connection */}
         <div className="mb-6">
@@ -243,7 +243,6 @@ export default function DepositApp() {
               onClick={connectWallet}
               className="w-full py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 font-medium flex items-center justify-center gap-2 mut-btn"
             >
-              Connect Phantom Wallet
             </button>
           ) : (
             <div className="bg-gray-100 p-3 rounded-md">
