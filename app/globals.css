@@ -47,14 +47,18 @@ body {
 }
 
 .mut-wallet{
-  font-size: 12px;
+  font-size: 10px;
     padding: 16px;
     color: #FECD34;
     background-color: #324a57;
     margin-top: 16px;
     border: solid 1px #FECD34;
 }
-
 .text-red-600 {
     color: rgb(255 63 63);
+}
+.mut-buy-green{
+  background: url(buy-btn-green.svg) center no-repeat;
+  height: 50px;
+  width:400px;
 }

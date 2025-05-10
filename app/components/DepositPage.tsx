@@ -311,18 +311,18 @@ export default function DepositApp() {
             <div className="p-4 rounded-md mb-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-600">You Pay</p>
-                  <p className="text-lg text-black font-bold">
+                  <p className="text-sm ">You Pay</p>
+                  <p className="text-lg font-bold">
                     {inputAmount || '0'} {paymentToken}
                   </p>
                 </div>
                 <ArrowRight className="text-gray-500" />
                 <div>
-                  <p className="text-sm text-gray-600">You Receive</p>
-                  <p className="text-lg text-black font-bold">{outputAmount} MUTR</p>
+                  <p className="text-sm ">You Receive</p>
+                  <p className="text-lg font-bold">{outputAmount} MUTR</p>
                 </div>
               </div>
-              <p className="text-xs text-gray-500 mt-2 text-center">
+              <p className="text-xs mt-2 text-center">
                 Rate: 1 {paymentToken} = {paymentToken === 'SOL' ? MUTR_EXCHANGE_RATE_SOL : MUTR_EXCHANGE_RATE_USDC} MUTR
               </p>
             </div>
@@ -353,7 +353,7 @@ export default function DepositApp() {
             
             {/* Purchase Button */}
             <button
-              className={`w-full py-3 text-white rounded-md font-medium flex items-center justify-center gap-2 ${isLoading ? 'bg-gray-500 cursor-not-allowed' : 'bg-green-600 hover:bg-green-700'}`}
+              className={`mut-buy-green w-full py-3 text-white rounded-md font-medium flex items-center justify-center gap-2 ${isLoading ? 'bg-gray-500 cursor-not-allowed' : 'bg-green-600 hover:bg-green-700'}`}
               onClick={handlePurchase}
               disabled={isLoading || !inputAmount || isNaN(parseFloat(inputAmount)) || parseFloat(inputAmount) <= 0}
             >
