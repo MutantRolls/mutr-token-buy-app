@@ -226,7 +226,7 @@ export default function DepositApp() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4 mut-bg">
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center mut-bg">
       <Head>
         <title>MUTR Token Purchase</title>
         <meta name="description" content="Buy MUTR tokens with SOL or USDC" />

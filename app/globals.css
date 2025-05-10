@@ -26,11 +26,14 @@ body {
   background: url(connet-btn.svg) center no-repeat;
   height: 50px;
   width:400px;
-
+}
+.mut-btn:hover{
+  opacity: 0.7;
+  transition: 0.2s ease-in-out ;
 }
 
 .mut-bg{
+  background: url(pop-bg.svg) center top no-repeat;
   background-color: #535F66;
   color: #ffffff;
-
 }
