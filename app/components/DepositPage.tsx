@@ -299,6 +299,7 @@ export default function DepositApp() {
                   onChange={(e) => setInputAmount(e.target.value)}
                   min="0"
                   step="0.01"
+                  maxlength="4"
                   disabled={isLoading}
                 />
                 <div className="absolute right-3 top-3 text-gray-500 font-semibold">

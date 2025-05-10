@@ -26,6 +26,7 @@ body {
   background: url(connet-btn.svg) center no-repeat;
   height: 50px;
   width:400px;
+   margin: 0 auto;
 }
 
 .mut-btn:hover{
@@ -39,7 +40,7 @@ body {
   background-color: #19313f;
   color: #ffffff;
   background-size: contain;
-    margin: 0 auto;
+ 
 }
 .mut-adress{
     flex-direction: column;
@@ -70,10 +71,12 @@ body {
 .mut-g{
   color: #00A954;
 }
-
 .bg-blue-600 {
     --tw-bg-opacity: 1;
     background-color: rgb(255 205 52);
     border-radius: 0;
     color: #000;
+}
+.bg-gray-800 {
+    background-color: rgb(60 72 90);
 }
