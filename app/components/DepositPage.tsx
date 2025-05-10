@@ -241,7 +241,7 @@ export default function DepositApp() {
           {!walletConnected ? (
             <button
               onClick={connectWallet}
-              className="w-full py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 font-medium flex items-center justify-center gap-2 mut-btn"
+              className="w-full py-3 text-white font-medium flex items-center justify-center gap-2 mut-btn"
             >
             </button>
           ) : (
@@ -269,7 +269,7 @@ export default function DepositApp() {
               <label className="block text-sm font-medium mb-2 text-center">Select Payment Token</label>
               <div className="flex gap-2">
                 <button 
-                  className={`flex-1 py-3 px-4 rounded-md flex items-center justify-center gap-2 ${paymentToken === 'SOL' ? 'bg-blue-600 ' : 'bg-gray-800 text-gray-100'}`}
+                  className={`flex-1 py-3 px-4 flex items-center justify-center gap-2 ${paymentToken === 'SOL' ? 'bg-blue-600 ' : 'bg-gray-800 text-gray-100'}`}
                   onClick={() => setPaymentToken('SOL')}
                   disabled={isLoading}
                 >
@@ -277,7 +277,7 @@ export default function DepositApp() {
                   <span>SOL</span>
                 </button>
                 <button 
-                  className={`flex-1 py-3 px-4 rounded-md flex items-center justify-center gap-2 ${paymentToken === 'USDC' ? 'bg-blue-600 ' : 'bg-gray-800 text-gray-100'}`}
+                  className={`flex-1 py-3 px-4 flex items-center justify-center gap-2 ${paymentToken === 'USDC' ? 'bg-blue-600 ' : 'bg-gray-800 text-gray-100'}`}
                   onClick={() => setPaymentToken('USDC')}
                   disabled={isLoading}
                 >
@@ -293,7 +293,7 @@ export default function DepositApp() {
               <div className="relative">
                 <input
                   type="number"
-                  className="w-full p-3 text-black border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full p-3 text-black border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                   placeholder={`Enter ${paymentToken} amount`}
                   value={inputAmount}
                   onChange={(e) => setInputAmount(e.target.value)}

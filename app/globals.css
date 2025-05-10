@@ -39,6 +39,7 @@ body {
   background-color: #19313f;
   color: #ffffff;
   background-size: contain;
+    margin: 0 auto;
 }
 .mut-adress{
     flex-direction: column;
@@ -74,4 +75,5 @@ body {
     --tw-bg-opacity: 1;
     background-color: rgb(255 205 52);
     border-radius: 0;
+    color: #000;
 }
