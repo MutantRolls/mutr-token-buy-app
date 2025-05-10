@@ -60,11 +60,18 @@ body {
 .mut-buy-green{
   background: url(buy-btn-green.svg) center no-repeat;
   height: 50px;
-  width:400px;
+  width: 270px;    
+  margin: 0 auto;
 }
 .mut-y{
   color: #FECD34;
 }
 .mut-g{
   color: #00A954;
+}
+
+.bg-blue-600 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(255 205 52);
+    border-radius: 0;
 }

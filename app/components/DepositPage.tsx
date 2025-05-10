@@ -269,7 +269,7 @@ export default function DepositApp() {
               <label className="block text-sm font-medium mb-2 text-center">Select Payment Token</label>
               <div className="flex gap-2">
                 <button 
-                  className={`flex-1 py-3 px-4 rounded-md flex items-center justify-center gap-2 ${paymentToken === 'SOL' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'}`}
+                  className={`flex-1 py-3 px-4 rounded-md flex items-center justify-center gap-2 ${paymentToken === 'SOL' ? 'bg-blue-600 ' : 'bg-gray-800 text-gray-100'}`}
                   onClick={() => setPaymentToken('SOL')}
                   disabled={isLoading}
                 >
@@ -277,7 +277,7 @@ export default function DepositApp() {
                   <span>SOL</span>
                 </button>
                 <button 
-                  className={`flex-1 py-3 px-4 rounded-md flex items-center justify-center gap-2 ${paymentToken === 'USDC' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'}`}
+                  className={`flex-1 py-3 px-4 rounded-md flex items-center justify-center gap-2 ${paymentToken === 'USDC' ? 'bg-blue-600 ' : 'bg-gray-800 text-gray-100'}`}
                   onClick={() => setPaymentToken('USDC')}
                   disabled={isLoading}
                 >
@@ -318,8 +318,8 @@ export default function DepositApp() {
                 </div>
                 <ArrowRight className="text-gray-100" />
                 <div>
-                  <p className="text-sm mut-g">You Receive</p>
-                  <p className="text-lg font-bold">{outputAmount} MUTR</p>
+                  <p className="text-sm">You Receive</p>
+                  <p className="text-lg font-bold mut-g">{outputAmount} MUTR</p>
                 </div>
               </div>
               <p className="text-xs mt-2 text-center">
