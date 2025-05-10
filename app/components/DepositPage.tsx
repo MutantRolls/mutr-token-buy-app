@@ -226,14 +226,14 @@ export default function DepositApp() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4 mut-bg">
       <Head>
         <title>MUTR Token Purchase</title>
         <meta name="description" content="Buy MUTR tokens with SOL or USDC" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       
-      <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-md">
+      <div className="rounded-lg p-6 w-full max-w-md">
         <h1 className="text-2xl font-bold mb-6 text-center text-gray-800">Buy MUTR Token</h1>
         
         {/* Wallet Connection */}
