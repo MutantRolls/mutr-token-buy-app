@@ -246,10 +246,10 @@ export default function DepositApp() {
             </button>
           ) : (
             <div className="p-3 rounded-md">
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between mut-adress">
                 <div className="truncate">
                   <span className="text-sm">Connected Wallet</span>
-                  <p className="font-mono text-black text-sm truncate">{publicKey?.toString()}</p>
+                  <p className="text-sm truncate mut-wallet">{publicKey?.toString()}</p>
                 </div>
                 <button
                   onClick={disconnectWallet}
