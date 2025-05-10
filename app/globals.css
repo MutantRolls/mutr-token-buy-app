@@ -80,3 +80,8 @@ body {
 .bg-gray-800 {
     background-color: rgb(60 72 90);
 }
+.hover\:bg-green-700:hover {
+    background: none;
+    opacity: 0.7;
+    transition: 0.2s ease-in-out ;
+}
