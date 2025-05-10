@@ -245,10 +245,10 @@ export default function DepositApp() {
             >
             </button>
           ) : (
-            <div className="bg-gray-100 p-3 rounded-md">
+            <div className="p-3 rounded-md">
               <div className="flex items-center justify-between">
                 <div className="truncate">
-                  <span className="text-sm text-gray-600">Connected Wallet</span>
+                  <span className="text-sm">Connected Wallet</span>
                   <p className="font-mono text-black text-sm truncate">{publicKey?.toString()}</p>
                 </div>
                 <button
@@ -266,7 +266,7 @@ export default function DepositApp() {
           <>
             {/* Token Selection */}
             <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Select Payment Token</label>
+              <label className="block text-sm font-medium mb-2">Select Payment Token</label>
               <div className="flex gap-2">
                 <button 
                   className={`flex-1 py-3 px-4 rounded-md flex items-center justify-center gap-2 ${paymentToken === 'SOL' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'}`}
@@ -289,7 +289,7 @@ export default function DepositApp() {
             
             {/* Input Amount */}
             <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Enter Amount</label>
+              <label className="block text-sm font-medium mb-2">Enter Amount</label>
               <div className="relative">
                 <input
                   type="number"
@@ -308,7 +308,7 @@ export default function DepositApp() {
             </div>
             
             {/* Exchange Calculation */}
-            <div className="bg-gray-100 p-4 rounded-md mb-6">
+            <div className="p-4 rounded-md mb-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-600">You Pay</p>
