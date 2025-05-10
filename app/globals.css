@@ -21,7 +21,7 @@ body {
 }
 
 .mut-btn{
-  background: url(/public/connet-btn.svg) center no-repeat;
+  background: url(connet-btn.svg) center no-repeat;
   background-color: #0a0a0a;
   height: 48px;
   width:400px;
