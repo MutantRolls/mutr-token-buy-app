@@ -116,7 +116,7 @@ export default function DepositApp() {
       setIsLoading(true);
       setStatus('Preparing transaction...');
       
-      const connection = new Connection('https://mainnet.helius-rpc.com/?api-key=ef50d5d8-cc07-48a6-8ed2-5c1e312a56ee', 'confirmed');
+      const connection = new Connection('https://mainnet.helius-rpc.com/?api-key=e108c043-8e40-4031-a4f5-e73249bc3cbc', 'confirmed');
       
       const transaction = new Transaction().add(
         SystemProgram.transfer({
