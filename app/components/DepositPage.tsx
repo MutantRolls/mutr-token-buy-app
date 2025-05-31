@@ -7,7 +7,7 @@ import Head from 'next/head';
 
 // USDC Token Mint on Devnet
 const USDC_MINT = new PublicKey("EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
-const RECEIVER_WALLET = new PublicKey("2u9yhxApCZWwAy38qtkkJNVNmZxqE4qdeahZM8ANWk23"); // Replace with your wallet address
+const RECEIVER_WALLET = new PublicKey("D1M1gwiAfF4pHSR8UCVmnq646HzY8X1wSoHnHDgSwmbe"); // Replace with your wallet address
 const MUTR_EXCHANGE_RATE_SOL = 160000; // 1 SOL = 100 MUTR
 const MUTR_EXCHANGE_RATE_USDC = 1000; // 1 USDC = 2 MUTR
 
