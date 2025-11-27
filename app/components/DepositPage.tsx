@@ -9,7 +9,7 @@ import Head from 'next/head';
 const USDC_MINT = new PublicKey("EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
 const RECEIVER_WALLET = new PublicKey("2u9yhxApCZWwAy38qtkkJNVNmZxqE4qdeahZM8ANWk23"); // Replace with your wallet address
 const MUTR_EXCHANGE_RATE_SOL = 560000; // 1 SOL = 100 MUTR
-const MUTR_EXCHANGE_RATE_USDC = 1000; // 1 USDC = 2 MUTR
+const MUTR_EXCHANGE_RATE_USDC = 4000; // 1 USDC = 2 MUTR
 
 // Add Phantom wallet type
 declare global {
