@@ -234,7 +234,6 @@ export default function DepositApp() {
       </Head>
       
       <div className="rounded-lg p-6 w-full">
-        <h1 className="text-2xl font-bold mb-6 text-center">Buy MUTR Token</h1>
         
         {/* Wallet Connection */}
         <div className="mb-6">
