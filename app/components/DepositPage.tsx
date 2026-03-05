@@ -233,7 +233,7 @@ export default function DepositApp() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       
-      <div className="rounded-lg p-6 w-full">
+      <div className="rounded-lg p-4 w-full">
         
         {/* Wallet Connection */}
         <div className="mb-6">
