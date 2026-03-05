@@ -38,12 +38,14 @@ export default function DepositApp() {
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [txSignature, setTxSignature] = useState<string>('');
 
-  // Calculate MUTR token output
+  // Calculate MUTR token output (no trailing .00)
   useEffect(() => {
     if (inputAmount && !isNaN(parseFloat(inputAmount))) {
       const amount = parseFloat(inputAmount);
       const rate = paymentToken === 'SOL' ? MUTR_EXCHANGE_RATE_SOL : MUTR_EXCHANGE_RATE_USDC;
-      setOutputAmount((amount * rate).toFixed(2));
+      const value = amount * rate;
+      const str = value % 1 === 0 ? String(Math.round(value)) : String(parseFloat(value.toFixed(2)));
+      setOutputAmount(str);
     } else {
       setOutputAmount('0');
     }
@@ -225,8 +227,13 @@ export default function DepositApp() {
     }
   };
 
+  // Shorten address for mobile: first 4 + ... + last 4
+  const shortAddress = publicKey
+    ? `${publicKey.toString().slice(0, 4)}…${publicKey.toString().slice(-4)}`
+    : '';
+
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center mut-bg px-3 sm:px-4 py-4 sm:py-6">
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center mut-bg px-3 sm:px-4 pt-2 sm:pt-3 pb-4 sm:pb-6">
       <Head>
         <title>MUTR Token Purchase</title>
         <meta name="description" content="Buy MUTR tokens with SOL or USDC" />
@@ -234,34 +241,36 @@ export default function DepositApp() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       
-      <div className="rounded-lg p-4 sm:p-6 w-full max-w-md mx-auto">
+      {/* Connected Wallet bar – top, near window close area */}
+      {walletConnected && (
+        <div className="w-full max-w-md flex justify-end items-center gap-2 px-1 pb-2 sm:pb-3">
+          <div className="mut-wallet-compact flex items-center gap-2 min-w-0 flex-1 sm:flex-initial justify-end">
+            <span className="text-[10px] sm:text-xs text-gray-300 shrink-0 hidden sm:inline">Wallet</span>
+            <span className="mut-wallet-inline text-[10px] sm:text-xs truncate max-w-[140px] sm:max-w-[200px]" title={publicKey?.toString()}>
+              {shortAddress}
+            </span>
+            <button
+              onClick={disconnectWallet}
+              className="text-[10px] sm:text-xs text-red-400 hover:text-red-300 shrink-0 whitespace-nowrap"
+            >
+              Disconnect
+            </button>
+          </div>
+        </div>
+      )}
+      
+      <div className="rounded-lg p-4 sm:p-6 w-full max-w-md mx-auto flex-1 flex flex-col">
         <h1 className="text-lg sm:text-xl md:text-2xl font-bold mb-4 sm:mb-6 text-center">Buy MUTR Token</h1>
         
-        {/* Wallet Connection */}
-        <div className="mb-4 sm:mb-6">
-          {!walletConnected ? (
+        {!walletConnected && (
+          <div className="mb-4 sm:mb-6">
             <button
               onClick={connectWallet}
               className="w-full py-3 text-white font-medium flex items-center justify-center gap-2 mut-btn text-xs sm:text-sm"
             >
             </button>
-          ) : (
-            <div className="p-2 sm:p-3 rounded-md">
-              <div className="flex items-center justify-between mut-adress">
-                <div className="truncate min-w-0">
-                  <span className="text-xs sm:text-sm">Connected Wallet</span>
-                  <p className="text-xs sm:text-sm truncate mut-wallet">{publicKey?.toString()}</p>
-                </div>
-                <button
-                  onClick={disconnectWallet}
-                  className="text-xs sm:text-sm text-red-600 hover:text-red-800 shrink-0"
-                >
-                  Disconnect
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
+          </div>
+        )}
         
         {walletConnected && (
           <>

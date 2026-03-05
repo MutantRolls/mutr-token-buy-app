@@ -92,6 +92,31 @@ body {
     margin-top: 10px;
   }
 }
+
+/* Compact wallet bar at top (near window close) */
+.mut-wallet-compact {
+  justify-content: flex-end;
+}
+
+.mut-wallet-inline {
+  color: #FECD34;
+  background-color: #324a57;
+  border: 1px solid #FECD34;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 10px;
+  display: inline-block;
+  letter-spacing: 0.02em;
+}
+
+@media (max-width: 768px) {
+  .mut-wallet-inline {
+    padding: 5px 8px;
+    font-size: 9px;
+    max-width: 120px;
+  }
+}
+
 .text-red-600 {
     color: rgb(255 63 63);
 }
