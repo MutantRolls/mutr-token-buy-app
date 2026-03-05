@@ -1,0 +1,71 @@
+<svg width="272" height="50" viewBox="0 0 272 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_d_2076_4655)">
+<mask id="path-1-inside-1_2076_4655" fill="white">
+<path d="M10 2H6V46H10V2Z"/>
+</mask>
+<path d="M10 2H6V46H10V2Z" fill="#00A954"/>
+<path d="M10 2V4H6V2V0H10V2ZM6 46V44H10V46V48H6V46Z" fill="#091A24" mask="url(#path-1-inside-1_2076_4655)"/>
+<mask id="path-3-inside-2_2076_4655" fill="white">
+<path d="M6 4H4V44H6V4Z"/>
+</mask>
+<path d="M6 4H4V44H6V4Z" fill="#00A954"/>
+<path d="M6 4V6H4V4V2H6V4ZM4 44V42H6V44V46H4V44Z" fill="#091A24" mask="url(#path-3-inside-2_2076_4655)"/>
+<mask id="path-5-inside-3_2076_4655" fill="white">
+<path d="M4 6H2V42H4V6Z"/>
+</mask>
+<path d="M4 6H2V42H4V6Z" fill="#00A954"/>
+<path d="M4 6V10H2V6V2H4V6ZM2 42V38H4V42V46H2V42Z" fill="#091A24" mask="url(#path-5-inside-3_2076_4655)"/>
+<mask id="path-7-inside-4_2076_4655" fill="white">
+<path d="M2 10H0V38H2V10Z"/>
+</mask>
+<path d="M2 10H0V38H2V10Z" fill="#091A24"/>
+<path d="M2 10V14H0V10V6H2V10ZM0 38V34H2V38V42H0V38Z" fill="#091A24" mask="url(#path-7-inside-4_2076_4655)"/>
+<mask id="path-9-inside-5_2076_4655" fill="white">
+<path d="M10 0H262V48H10V0Z"/>
+</mask>
+<path d="M10 0H262V48H10V0Z" fill="#00A954"/>
+<path d="M10 0V2H262V0V-2H10V0ZM262 48V46H10V48V50H262V48Z" fill="#091A24" mask="url(#path-9-inside-5_2076_4655)"/>
+<rect x="8" y="42" width="254" height="4" fill="#009048"/>
+<rect x="7" y="2" width="255" height="2" fill="#02C664"/>
+<rect x="6" y="4" width="256" height="2" fill="#02C664"/>
+<rect x="10" y="6" width="2" height="4" transform="rotate(90 10 6)" fill="#02C664"/>
+<rect x="10" y="42" width="2" height="4" transform="rotate(90 10 42)" fill="#009048"/>
+<mask id="path-16-inside-6_2076_4655" fill="white">
+<path d="M262 2H266V46H262V2Z"/>
+</mask>
+<path d="M262 2H266V46H262V2Z" fill="#00A954"/>
+<path d="M262 2V4H266V2V0H262V2ZM266 46V44H262V46V48H266V46Z" fill="#091A24" mask="url(#path-16-inside-6_2076_4655)"/>
+<mask id="path-18-inside-7_2076_4655" fill="white">
+<path d="M266 4H268V44H266V4Z"/>
+</mask>
+<path d="M266 4H268V44H266V4Z" fill="#00A954"/>
+<path d="M266 4V6H268V4V2H266V4ZM268 44V42H266V44V46H268V44Z" fill="#091A24" mask="url(#path-18-inside-7_2076_4655)"/>
+<mask id="path-20-inside-8_2076_4655" fill="white">
+<path d="M268 6H270V42H268V6Z"/>
+</mask>
+<path d="M268 6H270V42H268V6Z" fill="#00A954"/>
+<path d="M268 6V10H270V6V2H268V6ZM270 42V38H268V42V46H270V42Z" fill="#091A24" mask="url(#path-20-inside-8_2076_4655)"/>
+<mask id="path-22-inside-9_2076_4655" fill="white">
+<path d="M270 10H272V38H270V10Z"/>
+</mask>
+<path d="M270 10H272V38H270V10Z" fill="#091A24"/>
+<path d="M270 10V14H272V10V6H270V10ZM272 38V34H270V38V42H272V38Z" fill="#091A24" mask="url(#path-22-inside-9_2076_4655)"/>
+<rect width="4" height="4" transform="matrix(-1 0 0 1 266 40)" fill="#009048"/>
+<rect width="4" height="4" transform="matrix(-1 0 0 1 268 38)" fill="#009048"/>
+<rect width="4" height="28" transform="matrix(-1 0 0 1 270 10)" fill="#009048"/>
+<rect width="2" height="28" transform="matrix(-1 0 0 1 268 6)" fill="#009048"/>
+<rect width="4" height="2" transform="matrix(-1 0 0 1 266 4)" fill="#02C664"/>
+<path d="M6 42H4V38H2V10H4V6H6V42Z" fill="#02C664"/>
+</g>
+<defs>
+<filter id="filter0_d_2076_4655" x="0" y="0" width="272" height="50" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="2"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.0352941 0 0 0 0 0.101961 0 0 0 0 0.141176 0 0 0 1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2076_4655"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2076_4655" result="shape"/>
+</filter>
+</defs>
+</svg>

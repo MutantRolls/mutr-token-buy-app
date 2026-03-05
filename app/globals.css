@@ -1,0 +1,132 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: "Press Start 2P", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Mobile: slightly smaller base text so content fits */
+@media (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 12px;
+  }
+}
+
+.mut-btn{
+  background: url(connet-btn.svg) center no-repeat;
+  background-size: contain;
+  height: 50px;
+  width: 400px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .mut-btn {
+    width: 100%;
+    height: 44px;
+  }
+}
+
+.mut-btn:hover{
+  opacity: 0.7;
+  transition: 0.2s ease-in-out ;
+  background-color: none;
+}
+
+.mut-bg{
+  background: url(pop-bg.svg) center top no-repeat;
+  background-color: #19313f;
+  color: #ffffff;
+  background-size: contain;
+ 
+}
+.mut-adress{
+    flex-direction: column;
+    text-align: center;
+    gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .mut-adress {
+    gap: 10px;
+  }
+}
+
+.mut-wallet{
+  font-size: 10px;
+  padding: 16px;
+  color: #FECD34;
+  background-color: #324a57;
+  margin-top: 16px;
+  border: solid 1px #FECD34;
+}
+
+@media (max-width: 768px) {
+  .mut-wallet {
+    font-size: 8px;
+    padding: 10px;
+    margin-top: 10px;
+  }
+}
+.text-red-600 {
+    color: rgb(255 63 63);
+}
+.mut-buy-green{
+  background: url(buy-btn-green.svg) center no-repeat;
+  background-size: contain;
+  height: 50px;
+  width: 270px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .mut-buy-green {
+    width: 100%;
+    height: 44px;
+  }
+}
+.mut-y{
+  color: #FECD34;
+}
+.mut-g{
+  color: #00A954;
+}
+.bg-blue-600 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(255 205 52);
+    border-radius: 0;
+    color: #000;
+}
+.bg-gray-800 {
+    background-color: rgb(60 72 90);
+}
+.hover\:bg-green-700:hover {
+    background-color: none;
+    opacity: 0.7;
+    transition: 0.2s ease-in-out ;
+}
