@@ -1,15 +1,16 @@
 // pages/index.tsx
 import { useState, useEffect } from 'react';
 import { PublicKey, Connection, Transaction, SystemProgram, LAMPORTS_PER_SOL } from '@solana/web3.js';
-import { getAssociatedTokenAddress, createTransferInstruction, TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID } from '@solana/spl-token';
+import { getAssociatedTokenAddress, createTransferInstruction, getAccount } from '@solana/spl-token';
 import { Coins, DollarSign, ArrowRight, Loader2, Check } from 'lucide-react';
-import Head from 'next/head';
+import { toast } from 'react-toastify';
+import bs58 from 'bs58';
 
-// USDC Token Mint on Devnet
-const USDC_MINT = new PublicKey("EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
-const RECEIVER_WALLET = new PublicKey("HQ14VLzczC4UR1HRpVKgqzFp9jZNZigADCNbiKxH6t3q"); // Replace with your wallet address
-const MUTR_EXCHANGE_RATE_SOL = 380000; // 1 SOL = 100 MUTR
-const MUTR_EXCHANGE_RATE_USDC = 5000; // 1 USDC = 2 MUTR
+// Devnet USDC mint (Circle's official devnet USDC)
+const USDC_MINT = new PublicKey(process.env.NEXT_PUBLIC_USDC_MINT!);
+const RECEIVER_WALLET = new PublicKey(process.env.NEXT_PUBLIC_RECEIVER_WALLET!);
+const MUTR_EXCHANGE_RATE_SOL = 380000; // 1 SOL = 380,000 MUTR
+const MUTR_EXCHANGE_RATE_USDC = 5000;  // 1 USDC = 5,000 MUTR
 
 // Add Phantom wallet type
 declare global {
@@ -27,6 +28,25 @@ declare global {
   }
 }
 
+const LIMITS = {
+  SOL:  { min: 0.01, max: 100,   decimals: 4 },
+  USDC: { min: 1,    max: 10000, decimals: 2 },
+} as const;
+
+function validate(value: string, token: 'SOL' | 'USDC'): string {
+  if (!value) return '';
+  const num = parseFloat(value);
+  if (isNaN(num)) return 'Enter a valid number';
+  const { min, max, decimals } = LIMITS[token];
+  if (num <= 0) return 'Amount must be greater than 0';
+  if (num < min) return `Minimum is ${min} ${token}`;
+  if (num > max) return `Maximum is ${max.toLocaleString()} ${token}`;
+  const decimalPart = value.split('.')[1];
+  if (decimalPart && decimalPart.length > decimals)
+    return `Max ${decimals} decimal places for ${token}`;
+  return '';
+}
+
 export default function DepositApp() {
   const [walletConnected, setWalletConnected] = useState<boolean>(false);
   const [publicKey, setPublicKey] = useState<PublicKey | null>(null);
@@ -37,6 +57,8 @@ export default function DepositApp() {
   const [status, setStatus] = useState<string>('');
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [txSignature, setTxSignature] = useState<string>('');
+  const [mutrSignature, setMutrSignature] = useState<string>('');
+  const [validationError, setValidationError] = useState<string>('');
 
   // Calculate MUTR token output (no trailing .00)
   useEffect(() => {
@@ -84,15 +106,13 @@ export default function DepositApp() {
         return;
       }
       
-      const response: any = await window.phantom?.solana?.connect();
-      const walletPublicKey = response.publicKey;
-      
-      setPublicKey(walletPublicKey);
+      const response = await window.phantom!.solana!.connect();
+      setPublicKey(response.publicKey);
       setWalletConnected(true);
-      
+
     } catch (error) {
       console.error('Error connecting to wallet:', error);
-      setStatus('Failed to connect wallet');
+      toast.error('Failed to connect wallet. Please try again.');
     }
   };
 
@@ -105,21 +125,40 @@ export default function DepositApp() {
       setStatus('');
       setIsSuccess(false);
       setTxSignature('');
+      setMutrSignature('');
     } catch (error) {
       console.error('Error disconnecting wallet:', error);
     }
   };
 
+  const fulfillMutr = async (paymentSignature: string, token: 'SOL' | 'USDC', amount: string) => {
+    setStatus('Sending MUTR tokens to your wallet...');
+    const res = await fetch('/api/fulfill', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        paymentSignature,
+        buyerPublicKey: publicKey!.toString(),
+        paymentToken: token,
+        inputAmount: amount,
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error ?? 'Failed to send MUTR tokens');
+    return data as { mutrSignature: string; mutrAmount: number };
+  };
+
   // Send SOL
   const sendSol = async () => {
     if (!publicKey || !inputAmount || isNaN(parseFloat(inputAmount))) return;
-    
+
     try {
       setIsLoading(true);
+      setIsSuccess(false);
       setStatus('Preparing transaction...');
-      
-      const connection = new Connection('https://mainnet.helius-rpc.com/?api-key=e108c043-8e40-4031-a4f5-e73249bc3cbc', 'confirmed');
-      
+
+      const connection = new Connection(process.env.NEXT_PUBLIC_SOLANA_RPC!, 'confirmed');
+
       const transaction = new Transaction().add(
         SystemProgram.transfer({
           fromPubkey: publicKey,
@@ -127,32 +166,41 @@ export default function DepositApp() {
           lamports: parseFloat(inputAmount) * LAMPORTS_PER_SOL,
         })
       );
-      
-      const { blockhash } = await connection.getRecentBlockhash();
+
+      const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash();
       transaction.recentBlockhash = blockhash;
       transaction.feePayer = publicKey;
-      
+
       setStatus('Please approve the transaction in your wallet...');
-      const signedTransaction: any = await window.phantom?.solana?.signTransaction(transaction);
-      
+      const signedTransaction = await window.phantom!.solana!.signTransaction(transaction);
+
+      // Extract signature from signed tx before sending so we have it even if already processed
+      const signature = bs58.encode(signedTransaction.signatures[0].signature!);
+
       setStatus('Sending SOL...');
-      const signature = await connection.sendRawTransaction(signedTransaction.serialize());
-      
-      setStatus('Confirming transaction...');
-      await connection.confirmTransaction(signature, 'confirmed');
-      
-      setStatus(`Transaction successful! ${inputAmount} SOL sent.`);
-      setIsSuccess(true);
+      try {
+        await connection.sendRawTransaction(signedTransaction.serialize());
+      } catch (sendError: any) {
+        if (!sendError.message?.includes('already been processed')) throw sendError;
+      }
+
+      setStatus('Confirming payment...');
+      await connection.confirmTransaction({ signature, blockhash, lastValidBlockHeight }, 'confirmed');
       setTxSignature(signature);
-      
-      setTimeout(() => {
-        setInputAmount('');
-        setIsLoading(false);
-      }, 5000);
-      
+
+      const { mutrSignature, mutrAmount } = await fulfillMutr(signature, 'SOL', inputAmount);
+
+      setMutrSignature(mutrSignature);
+      setStatus(`Success! ${mutrAmount.toLocaleString()} MUTR sent to your wallet.`);
+      setIsSuccess(true);
+      setIsLoading(false);
+      setTimeout(() => setInputAmount(''), 5000);
+
     } catch (error: any) {
       console.error('Error sending SOL:', error);
-      setStatus(`Transaction failed: ${error.message}`);
+      const msg = error.message ?? 'Transaction failed';
+      setStatus(msg);
+      toast.error(msg);
       setIsLoading(false);
     }
   };
@@ -160,60 +208,64 @@ export default function DepositApp() {
   // Send USDC
   const sendUsdc = async () => {
     if (!publicKey || !inputAmount || isNaN(parseFloat(inputAmount))) return;
-    
+
     try {
       setIsLoading(true);
+      setIsSuccess(false);
       setStatus('Preparing transaction...');
-      
-      const connection = new Connection('https://mainnet.helius-rpc.com/?api-key=e108c043-8e40-4031-a4f5-e73249bc3cbc', 'confirmed');
-      
-      const senderTokenAccount = await getAssociatedTokenAddress(
-        USDC_MINT,
-        publicKey
-      );
-      
-      const receiverTokenAccount = await getAssociatedTokenAddress(
-        USDC_MINT,
-        RECEIVER_WALLET
-      );
-      
+
+      const connection = new Connection(process.env.NEXT_PUBLIC_SOLANA_RPC!, 'confirmed');
+
+      const senderTokenAccount = await getAssociatedTokenAddress(USDC_MINT, publicKey);
+      const receiverTokenAccount = await getAssociatedTokenAddress(USDC_MINT, RECEIVER_WALLET);
+
+      try {
+        await getAccount(connection, senderTokenAccount);
+      } catch {
+        throw new Error("You don't have a USDC token account. Add USDC to your wallet first.");
+      }
+
       const transaction = new Transaction();
       const tokenAmount = Math.floor(parseFloat(inputAmount) * 1_000_000);
-      
+
       transaction.add(
-        createTransferInstruction(
-          senderTokenAccount,
-          receiverTokenAccount,
-          publicKey,
-          tokenAmount
-        )
+        createTransferInstruction(senderTokenAccount, receiverTokenAccount, publicKey, tokenAmount)
       );
-      
-      const { blockhash } = await connection.getRecentBlockhash();
+
+      const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash();
       transaction.recentBlockhash = blockhash;
       transaction.feePayer = publicKey;
-      
+
       setStatus('Please approve the transaction in your wallet...');
-      const signedTransaction: any = await window.phantom?.solana?.signTransaction(transaction);
-      
+      const signedTransaction = await window.phantom!.solana!.signTransaction(transaction);
+
+      // Extract signature from signed tx before sending so we have it even if already processed
+      const signature = bs58.encode(signedTransaction.signatures[0].signature!);
+
       setStatus('Sending USDC...');
-      const signature = await connection.sendRawTransaction(signedTransaction.serialize());
-      
-      setStatus('Confirming transaction...');
-      await connection.confirmTransaction(signature, 'confirmed');
-      
-      setStatus(`Transaction successful! ${inputAmount} USDC sent.`);
-      setIsSuccess(true);
+      try {
+        await connection.sendRawTransaction(signedTransaction.serialize());
+      } catch (sendError: any) {
+        if (!sendError.message?.includes('already been processed')) throw sendError;
+      }
+
+      setStatus('Confirming payment...');
+      await connection.confirmTransaction({ signature, blockhash, lastValidBlockHeight }, 'confirmed');
       setTxSignature(signature);
-      
-      setTimeout(() => {
-        setInputAmount('');
-        setIsLoading(false);
-      }, 5000);
-      
+
+      const { mutrSignature, mutrAmount } = await fulfillMutr(signature, 'USDC', inputAmount);
+
+      setMutrSignature(mutrSignature);
+      setStatus(`Success! ${mutrAmount.toLocaleString()} MUTR sent to your wallet.`);
+      setIsSuccess(true);
+      setIsLoading(false);
+      setTimeout(() => setInputAmount(''), 5000);
+
     } catch (error: any) {
       console.error('Error sending USDC:', error);
-      setStatus(`Transaction failed: ${error.message}`);
+      const msg = error.message ?? 'Transaction failed';
+      setStatus(msg);
+      toast.error(msg);
       setIsLoading(false);
     }
   };
@@ -234,12 +286,6 @@ export default function DepositApp() {
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center mut-bg px-3 sm:px-4 pt-2 sm:pt-3 pb-4 sm:pb-6">
-      <Head>
-        <title>MUTR Token Purchase</title>
-        <meta name="description" content="Buy MUTR tokens with SOL or USDC" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
       
       {/* Connected Wallet bar – top, near window close area */}
       {walletConnected && (
@@ -267,8 +313,7 @@ export default function DepositApp() {
             <button
               onClick={connectWallet}
               className="w-full py-3 text-white font-medium flex items-center justify-center gap-2 mut-btn text-xs sm:text-sm"
-            >
-            </button>
+            />
           </div>
         )}
         
@@ -280,7 +325,7 @@ export default function DepositApp() {
               <div className="flex gap-2">
                 <button 
                   className={`flex-1 py-2.5 sm:py-3 px-3 sm:px-4 flex items-center justify-center gap-1.5 sm:gap-2 text-xs sm:text-base ${paymentToken === 'SOL' ? 'bg-blue-600 ' : 'bg-gray-800 text-gray-100'}`}
-                  onClick={() => setPaymentToken('SOL')}
+                  onClick={() => { setPaymentToken('SOL'); setValidationError(validate(inputAmount, 'SOL')); }}
                   disabled={isLoading}
                 >
                   <Coins className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -288,7 +333,7 @@ export default function DepositApp() {
                 </button>
                 <button 
                   className={`flex-1 py-2.5 sm:py-3 px-3 sm:px-4 flex items-center justify-center gap-1.5 sm:gap-2 text-xs sm:text-base ${paymentToken === 'USDC' ? 'bg-blue-600 ' : 'bg-gray-800 text-gray-100'}`}
-                  onClick={() => setPaymentToken('USDC')}
+                  onClick={() => { setPaymentToken('USDC'); setValidationError(validate(inputAmount, 'USDC')); }}
                   disabled={isLoading}
                 >
                   <DollarSign className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -303,18 +348,29 @@ export default function DepositApp() {
               <div className="relative">
                 <input
                   type="number"
-                  className="w-full p-2.5 sm:p-3 text-sm sm:text-base text-black border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                  className={`w-full p-2.5 sm:p-3 text-sm sm:text-base text-black border focus:ring-blue-500 focus:border-blue-500 ${validationError ? 'border-red-500' : 'border-gray-300'}`}
                   placeholder={`Enter ${paymentToken} amount`}
                   value={inputAmount}
-                  onChange={(e) => setInputAmount(e.target.value)}
+                  onChange={(e) => {
+                    setInputAmount(e.target.value);
+                    setValidationError(validate(e.target.value, paymentToken));
+                  }}
                   min="0"
-                  step="0.01"
+                  step={paymentToken === 'SOL' ? '0.0001' : '0.01'}
                   disabled={isLoading}
                 />
                 <div className="absolute right-2.5 sm:right-3 top-2.5 sm:top-3 text-gray-500 font-semibold text-xs sm:text-sm">
                   {paymentToken}
                 </div>
               </div>
+              {validationError && (
+                <p className="mt-1.5 text-[10px] sm:text-xs text-red-400">{validationError}</p>
+              )}
+              {!validationError && (
+                <p className="mt-1.5 text-[10px] sm:text-xs text-gray-400 text-center">
+                  Min {LIMITS[paymentToken].min} · Max {LIMITS[paymentToken].max.toLocaleString()} {paymentToken}
+                </p>
+              )}
             </div>
             
             {/* Exchange Calculation */}
@@ -349,13 +405,23 @@ export default function DepositApp() {
                   <span className="text-xs sm:text-sm">{status}</span>
                 </div>
                 {txSignature && (
-                  <a 
-                    href={`https://explorer.solana.com/tx/${txSignature}`}
+                  <a
+                    href={`https://explorer.solana.com/tx/${txSignature}?cluster=devnet`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-[10px] sm:text-xs underline mt-2 inline-block break-all"
                   >
-                    View on Solana Explorer
+                    Payment tx ↗
+                  </a>
+                )}
+                {mutrSignature && (
+                  <a
+                    href={`https://explorer.solana.com/tx/${mutrSignature}?cluster=devnet`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[10px] sm:text-xs underline mt-1 inline-block break-all"
+                  >
+                    MUTR transfer tx ↗
                   </a>
                 )}
               </div>
@@ -365,7 +431,7 @@ export default function DepositApp() {
             <button
               className={`mut-buy-green w-full py-2.5 sm:py-3 text-white rounded-md font-medium flex items-center justify-center gap-1.5 sm:gap-2 text-xs sm:text-sm ${isLoading ? 'bg-gray-500 cursor-not-allowed' : 'bg-green-600 hover:bg-green-700'}`}
               onClick={handlePurchase}
-              disabled={isLoading || !inputAmount || isNaN(parseFloat(inputAmount)) || parseFloat(inputAmount) <= 0}
+              disabled={isLoading || !inputAmount || !!validationError || isNaN(parseFloat(inputAmount)) || parseFloat(inputAmount) <= 0}
             >
               {isLoading ? (
                 <>
